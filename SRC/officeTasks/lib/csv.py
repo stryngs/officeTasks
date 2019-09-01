@@ -55,16 +55,25 @@ class Csv(object):
                 yield row
 
 
-    def csv2list(self, fName, delim = ',', quoteChar = '"'):
+    def csv2list(self, fName, delim = ',', quoteChar = '"', encoding = 'default'):
         """Turn the CSV into a list of lists where each list is a given row"""
         csvList = []
-        with open(fName, 'r') as iFile:
-            rows = csv.reader(iFile,
-                              delimiter = delim,
-                              quotechar = quoteChar)
-            for row in rows:
-                csvList.append(row)
-        return csvList
+        if encoding = 'default':
+            with open(fName, 'r') as iFile:
+                rows = csv.reader(iFile,
+                                  delimiter = delim,
+                                  quotechar = quoteChar)
+                for row in rows:
+                    csvList.append(row)
+            return csvList
+        else:
+            with open(fName, 'r', encoding = encoding) as iFile:
+                rows = csv.reader(iFile,
+                                  delimiter = delim,
+                                  quotechar = quoteChar)
+                for row in rows:
+                    csvlist.append(row)
+            return csvList
 
 
     def csv2sql(self, fName, tbName, dbName, df = False, compact = False, delim = ',', encoding = 'default'):
@@ -82,7 +91,7 @@ class Csv(object):
             if encoding == 'default':
                 df = pd.read_csv(fName, sep = delim)
             else:
-                df = pd.read_csv(fName, encoding = encoding, sep = delim)
+                df = pd.read_csv(fName, sep = delim, encoding = encoding)
 
         ## Let user compact column names
         if compact is True:
