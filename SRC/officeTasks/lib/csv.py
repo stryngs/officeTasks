@@ -72,7 +72,7 @@ class Csv(object):
                                   delimiter = delim,
                                   quotechar = quoteChar)
                 for row in rows:
-                    csvlist.append(row)
+                    csvList.append(row)
             return csvList
 
 
