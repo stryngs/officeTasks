@@ -58,7 +58,7 @@ class Csv(object):
     def csv2list(self, fName, delim = ',', quoteChar = '"', encoding = 'default'):
         """Turn the CSV into a list of lists where each list is a given row"""
         csvList = []
-        if encoding = 'default':
+        if encoding == 'default':
             with open(fName, 'r') as iFile:
                 rows = csv.reader(iFile,
                                   delimiter = delim,
