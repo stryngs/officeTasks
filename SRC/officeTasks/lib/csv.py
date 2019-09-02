@@ -76,7 +76,7 @@ class Csv(object):
             return csvList
 
 
-    def csv2sql(self, fName, tbName, dbName, df = False, compact = False, delim = ',', encoding = 'default'):
+    def csv2sql(self, fName, tbName, dbName, df = False, compact = False, delim = ',', hdrDict = None, encoding = None):
         """Turn the CSV to SQL
 
         Acts as a wrapper for Pandas read_csv()
@@ -88,10 +88,7 @@ class Csv(object):
         if df is not False:
             df = df
         else:
-            if encoding == 'default':
-                df = pd.read_csv(fName, sep = delim)
-            else:
-                df = pd.read_csv(fName, sep = delim, encoding = encoding)
+            df = pd.read_csv(fName, encoding = encoding, dtype = hdrDict, sep = delim)
 
         ## Let user compact column names
         if compact is True:
