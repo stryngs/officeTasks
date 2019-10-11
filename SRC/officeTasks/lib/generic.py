@@ -7,6 +7,7 @@ class Generic(object):
 
     def sweep(self, objName, mkdir = False):
         """Lazy broom attempt for files of directories"""
+        success = False
         if os.path.isdir(objName):
             try:
                 shutil.rmtree(objName, ignore_errors = True)
