@@ -20,8 +20,7 @@ class Generic(object):
                 success = True
             except:
                 pass
-
-        if success is True and mkdir is True:
+        if mkdir is True:
             os.mkdir(objName)
 
 
