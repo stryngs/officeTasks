@@ -67,3 +67,16 @@ myCon.close()
 
 OT.csv.sql2csv('new.csv', 'my.sqlite3', 'mytable')
 ```
+
+#### Draft a quick email
+```
+import officeTasks as OT
+
+
+OT.eml.wrapper()
+    -or-
+OT.eml.conDetails(server, username, password, debug = dbg, port = prt)
+OT.eml.mxPrep(recipients, subject, body)
+OT.eml.mxCon()
+OT.eml.mxSend()
+```
