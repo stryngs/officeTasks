@@ -73,7 +73,6 @@ OT.csv.sql2csv('new.csv', 'my.sqlite3', 'mytable')
 ```python
 import officeTasks as OT
 
-
 OT.eml.wrapper()
     -or-
 OT.eml.conDetails(server, username, password, debug = dbg, port = prt)
