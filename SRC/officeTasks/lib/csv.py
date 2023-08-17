@@ -1,6 +1,7 @@
 import csv
-import pandas as pd
+import re
 import sqlite3 as lite
+from datetime import datetime
 
 class Csv(object):
     """All things, csv related"""
@@ -76,31 +77,48 @@ class Csv(object):
             return csvList
 
 
-    def csv2sql(self, fName, tbName, dbName, df = False, compact = False, delim = ',', hdrDict = None, encoding = None, na_filter = False):
+    def csv2sql(self, fName, tbName, dbName, compact = False, delim = '.', encoding = 'default'):
         """Turn the CSV to SQL
 
-        Acts as a wrapper for Pandas read_csv()
+        Attempts data detection based off the first row of data
 
         Returns the connection, you must close
         """
-        ## Connect and create dataframe
         con = lite.connect(dbName)
-        if df is not False:
-            df = df
-        else:
-            df = pd.read_csv(fName, encoding = encoding, dtype = hdrDict, sep = delim, na_filter = na_filter)
+        db = con.cursor()
 
-        ## Let user compact column names
-        if compact is True:
-            df.columns = [c.replace(' ', '') for c in df.columns]
+        with open(fName) as csv_file:
+            rows = list(csv.reader(csv_file))
+        hdrs = rows.pop(0)
+
+        ## Attempt determinations
+        guesses = [self.guessType(value) for value in rows[0]]
+        q = f'''CREATE TABLE IF NOT EXISTS {tbName} (id INTEGER PRIMARY KEY,
+                                                    {", ".join(f"{col} {dtype}" for col, dtype in zip(hdrs, guesses))})
+             '''
+        db.execute(q)
 
         ## SQL it
-        df.to_sql(tbName,
-                  con,
-                  if_exists = 'append',
-                  index = False)
+        for row in rows:
+            insert_query = f'INSERT INTO {tbName} ({", ".join(hdrs)}) VALUES ({", ".join(["?"] * len(hdrs))})'
+            db.execute(insert_query, tuple(row))
         con.commit()
         return con
+
+
+    def guessType(self, value):
+        """Attempts to guess the input type and returns text by default"""
+        if re.match(r'^\d{4}-\d{2}-\d{2}$', value):
+            try:
+                datetime.strptime(value, '%Y-%m-%d')
+                return 'DATE'
+            except:
+                pass
+        elif re.match(r'^\d+$', value):
+            return 'INTEGER'
+        elif re.match(r'^\d+\.\d+$', value):
+            return 'REAL'
+        return 'TEXT'
 
 
     def sql2csv(self, csvName, dbName, tbName, delim = ',', quoteChar = '"', encoding = 'default'):
