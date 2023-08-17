@@ -2,13 +2,12 @@ from setuptools import setup
 
 setup(
     name = 'officeTasks',
-    version = '1.4.6',
+    version = '1.4.8',
     author = 'stryngs',
-    author_email = 'support@configitnow.com',
     packages = ['officeTasks', 'officeTasks.lib'],
     include_package_data = True,
     url = 'https://github.com/stryngs/officeTasks',
-    license ='GNU General Public License v2',
+    license ='GNU General Public License v3',
     keywords = 'common office tasks',
     description='Common office tasks'
 )
