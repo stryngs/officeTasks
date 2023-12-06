@@ -34,7 +34,7 @@ OT.gnr.sweep('fileThatDoesNotExist')
 ```
 
 ### Csv Class
-#### Easily create a CSV (Python3 right now -- Will add a Python2 option soon enough)
+#### Easily create a CSV
 ```python
 import officeTasks as OT
 
@@ -44,7 +44,7 @@ headers = ['column a', 'column b', 'column c']
 OT.csv.csvGen('my.csv', headers, ourList)
 ```
 
-#### Take a CSV and make a List of Lists based on the rows (Python3 right now -- Will add a Python2 option soon enough)
+#### Take a CSV and make a List of Lists based on the rows
 ```python
 import officeTasks as OT
 
@@ -59,7 +59,7 @@ myCon = OT.csv.csv2sql('my.csv', 'mytable', 'my.sqlite3')
 myCon.close()
 ```
 
-#### Take a SQLite3 DB and create a CSV from a given table (Python3 right now -- Will add a Python2 option soon enough)
+#### Take a SQLite3 DB and create a CSV from a given table
 ```python
 import officeTasks as OT
 
