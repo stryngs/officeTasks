@@ -90,22 +90,21 @@ class Csv(object):
         with open(fName) as csv_file:
             rows = list(csv.reader(csv_file))
         hdrs = [i.replace(' ', '') for i in rows.pop(0)]
-        hdrs = [f'`{i}`' for i in hdrs]                                        ## Deal with reserved columns
+        hdrs = [f'`{i}`' for i in hdrs] ## Deal with reserved columns
 
         ## Attempt determinations
         if len(rows) >= 1:
             guesses = [self.guessType(value) for value in rows[0]]
-            # q = f'''CREATE TABLE IF NOT EXISTS {tbName} (id INTEGER PRIMARY KEY, {", ".join(f"{col} {dtype}" for col, dtype in zip(hdrs, guesses))})
-            #      '''
-            q = f'''CREATE TABLE IF NOT EXISTS {tbName} ({", ".join(f"{col} {dtype}" for col, dtype in zip(hdrs, guesses))})
-                 '''
-            db.execute(q)
+        else:
+            guesses = [self.guessType(value) for value in hdrs]
+        q = f'''CREATE TABLE IF NOT EXISTS `{tbName}` ({", ".join(f"{col} {dtype}" for col, dtype in zip(hdrs, guesses))})'''
+        db.execute(q)
 
-            ## SQL it
-            for row in rows:
-                insert_query = f'INSERT INTO {tbName} ({", ".join(hdrs)}) VALUES ({", ".join(["?"] * len(hdrs))})'
-                db.execute(insert_query, tuple(row))
-            con.commit()
+        ## SQL it
+        for row in rows:
+            insert_query = f'INSERT INTO `{tbName}` ({", ".join(hdrs)}) VALUES ({", ".join(["?"] * len(hdrs))})'
+            db.execute(insert_query, tuple(row))
+        con.commit()
         return con
 
 
