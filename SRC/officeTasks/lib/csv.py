@@ -77,7 +77,7 @@ class Csv(object):
             return csvList
 
 
-    def csv2sql(self, fName, tbName, dbName, delim = '.', encoding = 'default'):
+    def csv2sql(self, fName, tbName, dbName, delim = ',', encoding = 'default'):
         """Turn the CSV to SQL
 
         Attempts data detection based off the first row of data
@@ -87,8 +87,9 @@ class Csv(object):
         con = lite.connect(dbName)
         db = con.cursor()
 
-        with open(fName) as csv_file:
-            rows = list(csv.reader(csv_file))
+        with open(fName, encoding = encoding) as iFile:
+            rows = list(csv.reader(iFile,
+                                   delimiter = delim))
         hdrs = [i.replace(' ', '') for i in rows.pop(0)]
         hdrs = [f'`{i}`' for i in hdrs] ## Deal with reserved columns
 
