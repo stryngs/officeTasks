@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = 'officeTasks',
-    version = '1.6.6',
+    version = '1.6.8',
     author = 'stryngs',
     packages = ['officeTasks', 'officeTasks.lib'],
     include_package_data = True,
